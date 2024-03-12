@@ -74,6 +74,5 @@ body {
 }
 
 .background {
-  background-image: url('/web/public/images/ellipse66.svg') left top  no-repeat;
-  background: url('/web/public/images/ellipse66.svg') left top  no-repeat, radial-gradient(circle, rgba(255, 255, 255, 0) -170%, rgba(42, 36, 152, 1) 70%);
+  background: url('../../public/images/ellipse66.png') 20% 50%  no-repeat, radial-gradient(circle, rgba(255, 255, 255, 0) -170%, rgba(42, 36, 152, 1) 70%);
 }

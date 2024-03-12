@@ -19,18 +19,22 @@ const FaqCard: React.FC<FaqCardProps> = ({ faq }) => {
 
   return (
     <div
-      className={`border p-4 rounded-lg shadow-md mb-2 bg-white ${
-        !isOpen && "max-h-14"
-      }`}
-    >
-      <div className="flex justify-between cursor-pointer" onClick={toggleOpen}>
-        <h5 className="font-medium text-lg">{faq.question}</h5>
-        <div className="text-xl">
-          {isOpen ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />}
-        </div>
+    className={`border p-2 sm:p-4 rounded-lg shadow-md mb-2 bg-white ${
+      !isOpen ? "max-h-20 overflow-hidden" : "overflow-visible"
+    }`}
+  >
+    <div className="flex justify-between cursor-pointer align-center" onClick={toggleOpen}>
+      <div className="font-medium text-lg break-words " style={{wordBreak: 'break-all'}}>
+      {  !isOpen ? (faq.question.length > 80 ? `${faq.question.slice(0, 80)}...` : faq.question): faq.question}
       </div>
-      {isOpen && <div className="mt-2 text-gray-700">{faq.answer}</div>}
+      <div className="text-xl">
+        {isOpen ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />}
+      </div>
     </div>
+    {isOpen && (
+      <div className="mt-2 text-gray-700 break-words text-responsive">{faq.answer}</div>
+    )}
+  </div>
   );
 };
 
