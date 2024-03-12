@@ -13,8 +13,21 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        light_blue: '#5442E3', 
+        background_white:'#F5F4FF'
+      },
+      fontSize:{
+        heading:'3.5rem',
+        dubHeading:'1.25rem'
+      },
+      fontFamily: {
+        'jost': ['Jost', 'sans-serif'],
+        'totillium': ['Titillium Web', 'sans-serif'], 
+      },
     },
   },
-  plugins: [],
+  plugins: []
 };
+
 export default config;
