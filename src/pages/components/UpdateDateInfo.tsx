@@ -4,9 +4,9 @@ interface props {
     updatedDate ?:string
 }
 function UpdateDateInfo(props:props) {
+    
  const {updatedDate} = props
 
- console.log(updatedDate,"updatedDate");
  
  const dateObject = new Date(updatedDate ? updatedDate:'');
 
