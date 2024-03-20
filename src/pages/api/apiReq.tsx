@@ -1,6 +1,6 @@
 import Axios from "./axios.config";
 
-import { termApi, aboutApi, faqApi, policyApi } from "./endPoints";
+import { termApi, aboutApi, faqApi, policyApi ,contactUsApi} from "./endPoints";
 
 export const getTerms = async () => {
   try {
@@ -35,6 +35,17 @@ export const getFAQ = async (param:object) => {
 export const getPolicy = async () => {
   try {
     const response: any = await Axios.get(policyApi);
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+  }
+};
+
+
+export const submitContactUs = async (payload:any) => {
+  try {
+    const response: any = await Axios.post(contactUsApi,payload);
 
     return response.data;
   } catch (e) {

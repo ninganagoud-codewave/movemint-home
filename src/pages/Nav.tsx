@@ -46,6 +46,9 @@ const Nav: React.FC = () => {
       case "Privacy Policy":
         path = "/policy";
         break;
+        case "Contact Us":
+          path = "/contact-us";
+          break;
       case "Terms & Conditions":
         path = "/terms";
         break;
@@ -107,7 +110,7 @@ const Nav: React.FC = () => {
             )
           )}
         </div>
-        <div className="hidden md:block border-light_blue rounded-lg border px-8 py-3 cursor-pointer font-jost text-light_blue text-base font-semibold">
+        <div className="hidden md:block border-light_blue rounded-lg border px-8 py-3 cursor-pointer font-jost text-light_blue text-base font-semibold" onClick={()=>handleSetActiveLink("Contact Us")}>
           Contact Us
         </div>
       </div>
