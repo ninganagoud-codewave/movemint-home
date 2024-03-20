@@ -23,11 +23,14 @@ const config: Config = {
       },
       fontFamily: {
         'jost': ['Jost', 'sans-serif'],
-        'totillium': ['Titillium Web', 'sans-serif'], 
+        'titillium': ['Titillium Web', 'sans-serif'], 
       },
     },
   },
-  plugins: []
+  plugins: [],
+  corePlugins: {
+    preflight: false,
+  }
 };
 
 export default config;
