@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 // Import icons from react-icons or any other library
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { getFAQ } from "../api/apiReq";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 type FaqItem = {
   question: string;
@@ -19,46 +20,81 @@ const FaqCard: React.FC<FaqCardProps> = ({ faq }) => {
 
   return (
     <div
-    className={`border p-2 sm:p-4 rounded-lg shadow-md mb-2 bg-white ${
-      !isOpen ? "max-h-20 overflow-hidden" : "overflow-visible"
-    }`}
-  >
-    <div className="flex justify-between cursor-pointer align-center" onClick={toggleOpen}>
-      <div className="font-medium text-lg break-words " style={{wordBreak: 'break-all'}}>
-      {  !isOpen ? (faq.question.length > 80 ? `${faq.question.slice(0, 80)}...` : faq.question): faq.question}
+      className={`border p-2 sm:p-4 rounded-lg shadow-md mb-2 bg-white ${
+        !isOpen ? "overflow-hidden" : "overflow-visible"
+      }`}
+    >
+      <div
+        className="flex justify-between cursor-pointer align-center"
+        onClick={toggleOpen}
+      >
+        <div
+          className="font-medium text-lg break-words "
+          style={{ wordBreak: "break-all" }}
+        >
+          {!isOpen
+            ? faq.question.length > 100
+              ? `${faq.question.slice(0, 100)}...`
+              : faq.question
+            : faq.question}
+        </div>
+        <div className="text-xl">
+          {isOpen ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />}
+        </div>
       </div>
-      <div className="text-xl">
-        {isOpen ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />}
-      </div>
+      {isOpen && (
+        <div className="mt-2 text-gray-700 break-words text-responsive">
+          {faq.answer}
+        </div>
+      )}
     </div>
-    {isOpen && (
-      <div className="mt-2 text-gray-700 break-words text-responsive">{faq.answer}</div>
-    )}
-  </div>
   );
 };
 
-const tabs = ["Running", "Cycling", "Movemax", "Calories"];
+const tabs = ["Running", "Steps", "Calories", "Movemax"];
 const FaqComponent: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]);
   const [faqs, setFaqs] = useState([]);
+  const [count , setCount] = useState<number>(0);
   const [loader, setLoader] = useState<boolean>(false);
+  const [hasMore , setHasMore] = useState<boolean>(false)
+  const [pageNumber , setPageNumber] = useState(0)
 
   useEffect(() => {
+
     const getData = async () => {
       const param = {
         category: activeTab.toLocaleLowerCase(),
+        pageNumber: 1,
+        limit: 10,
       };
       const response: any = await getFAQ(param);
       console.log("response", response?.data);
-
+      setHasMore(response?.data?.loadMore)
       setFaqs(response?.data?.faqs);
-      if (response?.status === 200) setLoader(true);
+      setCount(response?.data?.count)
+      if (response?.status === 200) {setLoader(true) ; setPageNumber(1) };
     };
 
     getData();
+    
+
   }, [activeTab]);
 
+  const fetchData = async () => {
+    console.log("i called ...");
+    
+    const param = {
+      category: activeTab.toLocaleLowerCase(),
+      pageNumber: pageNumber+1,
+      limit: 10,
+    };
+
+    const response: any = await getFAQ(param);
+    setFaqs(faqs.concat(response?.data?.faqs));
+    setHasMore(response?.data?.loadMore)
+    if (response?.status === 200) {setLoader(true) ; setPageNumber(pageNumber+1)};
+  };
 
   return (
     <>
@@ -72,7 +108,10 @@ const FaqComponent: React.FC = () => {
                   ? "bg-light_blue text-white"
                   : "bg-white text-black"
               }`}
-              onClick={() => {setActiveTab(tab) ;setLoader(false)}}
+              onClick={() => {
+                setActiveTab(tab);
+                setLoader(false);
+              }}
             >
               {tab}
             </div>
@@ -81,21 +120,41 @@ const FaqComponent: React.FC = () => {
       </div>
       {!loader ? (
         <div className="flex align-center justify-center">
-          <img src={"/images/loader.gif"} alt="loading......" className="h-16" />
+          <img
+            src={"/images/loader.gif"}
+            alt="loading......"
+            className="h-16"
+          />
         </div>
       ) : (
         <>
-          <div className="mx-auto grid grid-cols-1 md:grid-cols-2 max-w-4xl gap-4 w-full justify-center">
-            {faqs?.length > 0 ? (
-              faqs?.map((faq, index) => <FaqCard key={index} faq={faq} />)
-            ) : (
-              <div className="col-span-1 md:col-span-2 bg-white shadow-lg rounded-lg p-6 flex items-center justify-center text-center">
-                <p className="text-lg font-semibold text-gray-700">
-                  No FAQs added yet.
-                </p>
-              </div>
-            )}
-          </div>
+          <InfiniteScroll
+            dataLength={count}
+            next={fetchData}
+            loader={
+              <p style={{ textAlign: "center" }}>
+                <h4>Loading...</h4>
+              </p>
+            }
+            hasMore={hasMore}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b></b>
+              </p>
+            }
+          >
+            <div className="mx-auto grid grid-cols-1  max-w-4xl gap-4 w-full justify-center">
+              {faqs?.length > 0 ? (
+                faqs?.map((faq, index) => <FaqCard key={index} faq={faq} />)
+              ) : (
+                <div className="col-span-1 md:col-span-2 bg-white shadow-lg rounded-lg p-6 flex items-center justify-center text-center">
+                  <p className="text-lg font-semibold text-gray-700">
+                    No FAQs added yet.
+                  </p>
+                </div>
+              )}
+            </div>
+          </InfiniteScroll>
         </>
       )}
     </>

@@ -1,8 +1,6 @@
 import React from "react";
-import Heading from "../components/Heading";
 import FaqComponent from "../components/FAQCard";
 
-const heading = " Frequently Asked Questions";
 const subHeading =
   "Lorem Ipsum is simply dummy text of the printing and setting indus orem Ipsum";
 
