@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAboutUs, submitContactUs } from "../api/apiReq";
-import { log } from "console";
-import { emit } from "process";
+import {  submitContactUs } from "../api/apiReq";
 
 const heading = "About Us";
 const subHeading = "Read about Movemint";
@@ -39,22 +37,28 @@ const validateEmail = (email:string) => {
 
   const handleSubmit=async(e:any)=>{
     e.preventDefault()
-    setSubmitClicked(true)
-    if(!email)return setError('Enter valid email ID!')
-    if (email&&!validateEmail(email)) return setError('Please enter a valid email address.');
-    setLoading(true)
-    let res =await submitContactUs({email})
-    console.log('res',);
-    if(res?.status==200){
-        setSuccess('Thank you for contacting us! We’ll get back to you soon')
-        setSubmitClicked(false)
-        setError('')
-        setEmail(e.target.value)
-        setLoading(false)
+    try{
+      setSubmitClicked(true)
+      if(!email)return setError('Enter valid email ID!')
+      if (email&&!validateEmail(email)) return setError('Please enter a valid email address.');
+      setLoading(true)
+      let res =await submitContactUs({email})
+      console.log('res',);
+      if(res?.status==200){
+          setSuccess('Thank you for contacting us! We’ll get back to you soon')
+          setSubmitClicked(false)
+          setError('')
+          setEmail("")
+          setLoading(false)
+      }
+    }catch(e:any){
+      setSubmitClicked(false)
+      setEmail("")
+      setLoading(false)
+      setError(e.response.data.message??"Something went wrong");
     }
-    
-
   }
+
   return (
     <div>
       <div className="flex gap-y-8 align-center justify-center">
