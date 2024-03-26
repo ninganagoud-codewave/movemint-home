@@ -64,8 +64,8 @@ const Nav: React.FC = () => {
 
   return (
     <nav className="shadow-2xl bg-white">
-      <div className="flex justify-between items-center w-full px-6 py-4">
-        <div>
+      <div className="flex justify-between items-center px-6 py-4 cursor-pointer">
+        <div onClick={() => handleSetActiveLink("")}>
           <img
             src={"/images/movemintLogo.svg"}
             alt="Movemint Logo"
