@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// Import icons from react-icons or any other library
+import parse from 'html-react-parser'
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { getFAQ } from "../api/apiReq";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -44,7 +44,7 @@ const FaqCard: React.FC<FaqCardProps> = ({ faq }) => {
       </div>
       {isOpen && (
         <div className="mt-2 text-gray-700 break-words text-responsive">
-          {faq.answer}
+          {parse(faq.answer)}
         </div>
       )}
     </div>

@@ -63,8 +63,8 @@ const Nav: React.FC = () => {
   };
 
   return (
-    <nav className="shadow-2xl bg-white">
-      <div className="flex justify-between items-center px-6 py-4 cursor-pointer">
+    <nav className="header-container">
+      <div className="flex justify-between items-center px-6 py-4 cursor-pointer header-container">
         <div onClick={() => handleSetActiveLink("")}>
           <img
             src={"/images/movemintLogo.svg"}
@@ -100,8 +100,8 @@ const Nav: React.FC = () => {
             (link) => (
               <div
                 key={link}
-                className={`cursor-pointer font-jost font-normal text-base navItem ${
-                  activeLink === link ? "border-b-4 border-light_blue" : ""
+                className={`cursor-pointer font-jost font-normal text-base ${
+                  activeLink === link ? "active-border" : ""
                 }`}
                 onClick={() => handleSetActiveLink(link)}
               >
@@ -110,12 +110,12 @@ const Nav: React.FC = () => {
             )
           )}
         </div>
-        <div className="hidden md:block border-light_blue rounded-lg border px-8 py-3 cursor-pointer font-jost text-light_blue text-base font-semibold" onClick={()=>handleSetActiveLink("Contact Us")}>
+        <div className="hidden md:block border-light_blue rounded-lg border px-8 py-3 cursor-pointer font-jost text-light_blue text-base font-semibold contact-us-btn" onClick={()=>handleSetActiveLink("Contact Us")}>
           Contact Us
         </div>
       </div>
       {isOpen && (
-        <div className="md:hidden border-light_blue rounded-lg border px-8 py-3 cursor-pointer font-jost text-light_blue text-base font-semibold m-6">
+        <div className="md:hidden border-light_blue rounded-lg border px-8 py-3 cursor-pointer font-jost text-light_blue text-base font-semibold m-6 border-solid ">
           Contact Us
         </div>
       )}

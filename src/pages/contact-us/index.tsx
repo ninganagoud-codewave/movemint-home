@@ -43,19 +43,26 @@ const validateEmail = (email:string) => {
       if (email&&!validateEmail(email)) return setError('Please enter a valid email address.');
       setLoading(true)
       let res =await submitContactUs({email})
-      console.log('res',);
       if(res?.status==200){
           setSuccess('Thank you for contacting us! We’ll get back to you soon')
           setSubmitClicked(false)
           setError('')
           setEmail("")
           setLoading(false)
+
+          setTimeout(()=>{
+            setSuccess('')
+          },3000)
       }
-    }catch(e:any){
-      setSubmitClicked(false)
-      setEmail("")
-      setLoading(false)
+    }catch(e:any){      
       setError(e.response.data.message??"Something went wrong");
+
+      setTimeout(()=>{
+        setSubmitClicked(false)
+        setEmail("")
+        setLoading(false)
+        setError('');
+      },3000)
     }
   }
 
@@ -76,7 +83,7 @@ Let’s talk
       
         <input
         value={email}
-        type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your email"  
+        type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white " placeholder="Enter your email"  
         onChange={(e)=>{
             setSubmitClicked(false)
             setError('')
@@ -88,7 +95,7 @@ Let’s talk
         <button
         
         disabled={isLoading?true:false}
-        type="submit" className="cursor-pointer text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        type="submit" className="cursor-pointer text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 ">
           <img src="images/search-icon.svg"/>
         </button>
     </div>

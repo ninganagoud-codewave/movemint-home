@@ -43,12 +43,4 @@ export const getPolicy = async () => {
 };
 
 
-export const submitContactUs = async (payload:any) => {
-  try {
-    const response: any = await Axios.post(contactUsApi,payload);
-
-    return response.data;
-  } catch (e) {
-    console.log("error", e);
-  }
-};
+export const submitContactUs = async (payload:any) => Axios.post(contactUsApi,payload);

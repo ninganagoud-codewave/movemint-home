@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer className="bg-[#121421] text-[#D2D3DD] py-4 w-full">
-      <div className='container mx-auto flex justify-between items-center px-4 md:px-6 lg:px-8 footer-padding-smaller'>
+      <div className='flex justify-between items-center px-4 md:px-6  footer-padding-smaller w[80]'>
         <div>
           <p className='footer-text footer-text-smaller text-responsive'>© Copyright 2023 Movemint Private Limited. All rights reserved.</p>
         </div>
