@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import parse from 'html-react-parser'
+import parse from "html-react-parser";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { getFAQ } from "../api/apiReq";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -55,45 +55,50 @@ const tabs = ["Running", "Steps", "Calories", "Movemax"];
 const FaqComponent: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]);
   const [faqs, setFaqs] = useState([]);
-  const [count , setCount] = useState<number>(0);
+  const [count, setCount] = useState<number>(0);
   const [loader, setLoader] = useState<boolean>(false);
-  const [hasMore , setHasMore] = useState<boolean>(false)
-  const [pageNumber , setPageNumber] = useState(0)
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-
     const getData = async () => {
       const param = {
         category: activeTab.toLocaleLowerCase(),
         pageNumber: 1,
         limit: 10,
+        ...(searchTerm && {search:searchTerm})
       };
       const response: any = await getFAQ(param);
       console.log("response", response?.data);
-      setHasMore(response?.data?.loadMore)
+      setHasMore(response?.data?.loadMore);
       setFaqs(response?.data?.faqs);
-      setCount(response?.data?.count)
-      if (response?.status === 200) {setLoader(true) ; setPageNumber(1) };
+      setCount(response?.data?.count);
+      if (response?.status === 200) {
+        setLoader(true);
+        setPageNumber(1);
+      }
     };
 
     getData();
-    
-
-  }, [activeTab]);
+  }, [activeTab , searchTerm]);
 
   const fetchData = async () => {
     console.log("i called ...");
-    
+
     const param = {
       category: activeTab.toLocaleLowerCase(),
-      pageNumber: pageNumber+1,
+      pageNumber: pageNumber + 1,
       limit: 10,
     };
 
     const response: any = await getFAQ(param);
     setFaqs(faqs.concat(response?.data?.faqs));
-    setHasMore(response?.data?.loadMore)
-    if (response?.status === 200) {setLoader(true) ; setPageNumber(pageNumber+1)};
+    setHasMore(response?.data?.loadMore);
+    if (response?.status === 200) {
+      setLoader(true);
+      setPageNumber(pageNumber + 1);
+    }
   };
 
   return (
@@ -111,6 +116,7 @@ const FaqComponent: React.FC = () => {
               onClick={() => {
                 setActiveTab(tab);
                 setLoader(false);
+                setSearchTerm('');
               }}
             >
               {tab}
@@ -118,6 +124,13 @@ const FaqComponent: React.FC = () => {
           ))}
         </div>
       </div>
+      <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search FAQs..."
+          className="search-input mb-4 mt-2 px-4 py-2 border rounded-lg w-full max-w-4xl mx-auto shadow-sm focus:outline-none focus:ring-2 focus:ring-light_blue focus:border-transparent"
+        />
       {!loader ? (
         <div className="flex align-center justify-center">
           <img
